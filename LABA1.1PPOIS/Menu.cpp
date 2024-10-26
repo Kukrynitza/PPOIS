@@ -65,20 +65,17 @@ void Menu::addChangeInFile() {
 	addChange.close();
 }
 bool Menu::menuChoise(string choise) {
-	if (choise != "6") {
+	if (choise.empty()) {
 		choise = getChanges("");
 	}
-	else {
+	else if(choise == "test") {
 		choise = "5";
 	}
-	while (choise != "5") {
-		cout << "Посмотреть текст - 1" << endl;
-		cout << "Посмотреть правила - 2" << endl;
-		cout << "Добавить правило - 3" << endl;
-		cout << "Удалить правило - 4" << endl;
-		cout << "Алгоритм Маркова - log" << endl;
-		cout << "Завершить программу - 5" << endl;
-		cout << "Ввод: ";
+	else {
+		choise = "error";
+	}
+	while (choise != "5" && choise != "error") {
+		cout << "Посмотреть текст - 1\nПосмотреть правила - 2\nДобавить правило - 3\nУдалить правило - 4\nАлгоритм Маркова - log\nЗавершить программу - 5\nВвод: ";
 		getline(cin, choise, '\n');
 		cout << endl << endl;
 		if (choise == "1")
@@ -109,11 +106,12 @@ bool Menu::menuChoise(string choise) {
 			cout << endl << endl;
 		}
 		else if (choise == "5") {
-			return 0;
 		}
 		else {
 			cout << "Ошибка ввода" << endl << endl;
 		}
 	}
-	return 1;
+	if (choise == "5")
+		return 1;
+	return 0;
 }

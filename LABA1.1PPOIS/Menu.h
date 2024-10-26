@@ -11,6 +11,7 @@
 #include "ReadInformationFromFile.h"
 #include "Markov.h"
 #include <list>
+using namespace std;
 
 class Menu {
 private:

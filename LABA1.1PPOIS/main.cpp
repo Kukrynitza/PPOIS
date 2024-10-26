@@ -6,7 +6,7 @@ int main() {
     system("chcp 1251");
     setlocale(LC_ALL, "RU");
     Menu in;
-    in.menuChoise();
+    in.menuChoise("");
     return 0;
 }
 //PPOIS-laba-1.txt

@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <algorithm>ê
 #include <fstream>
 #include <string>
 #include <math.h>
@@ -26,3 +26,4 @@ public:
 };
 
 //C:\Users\37533\Desktop\course-2_semester-1\PPOIS\laba1\PPOIS-laba-1.txt
+//OpenCppCoverage --sources LABA1.1PPOIS -- .\x64\Debug\LABA1.1PPOIS.exe
