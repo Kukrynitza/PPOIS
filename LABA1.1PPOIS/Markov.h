@@ -1,15 +1,5 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <algorithm>ê
-#include <fstream>
-#include <string>
-#include <math.h>
-#include <iomanip>
-#include <map>
-#include <sstream>
 #include "ReadInformationFromFile.h"
-#include <list>
 
 
 class Markov {

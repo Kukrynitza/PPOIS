@@ -1,4 +1,14 @@
 #include "Markov.h"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <math.h>
+#include <iomanip>
+#include <map>
+#include <sstream>
+#include <list>
 
 void Markov::getText(string text) {
     this->text = text;
