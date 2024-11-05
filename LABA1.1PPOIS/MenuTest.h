@@ -2,7 +2,7 @@
 #include "Menu.h"
 TEST(MenuTest, AddAndDeleteChanges) {
     Menu menu;
-    menu.getChanges("C:\\Users\\37533\\Desktop\\projects\\course-2_semester-1\\PPOIS\\laba1\\PPOIS-laba-1.txt");
+    menu.getChanges("C:\\Users\\37533\\Desktop\\projects\\course-2_semester-1\\PPOIS\\LABA1.1PPOIS\\PPOIS-laba-1.txt");
     EXPECT_EQ(menu.setChanges().size(), 7);
     menu.newChange("sa", "de");
     EXPECT_EQ(menu.setChanges().size(), 8);
@@ -19,7 +19,7 @@ TEST(MenuTest, MunuChoise) {
 
 TEST(MenuTest, ConsoleOutputTest) {
     Menu menu;
-    menu.getChanges("C:\\Users\\37533\\Desktop\\projects\\course-2_semester-1\\PPOIS\\laba1\\PPOIS-laba-1.txt");
+    menu.getChanges("C:\\Users\\37533\\Desktop\\projects\\course-2_semester-1\\PPOIS\\LABA1.1PPOIS\\PPOIS-laba-1.txt");
     testing::internal::CaptureStdout();
     menu.consoleLogText();
     std::string output = testing::internal::GetCapturedStdout();
@@ -29,7 +29,7 @@ TEST(MenuTest, ConsoleOutputTest) {
 
 TEST(MenuTest, ConsoleOutputChanges) {
     Menu menu;
-    menu.getChanges("C:\\Users\\37533\\Desktop\\projects\\course-2_semester-1\\PPOIS\\laba1\\PPOIS-laba-1.txt");
+    menu.getChanges("C:\\Users\\37533\\Desktop\\projects\\course-2_semester-1\\PPOIS\\LABA1.1PPOIS\\PPOIS-laba-1.txt");
     testing::internal::CaptureStdout();
     menu.consoleLogChanges();
     std::string output = testing::internal::GetCapturedStdout();

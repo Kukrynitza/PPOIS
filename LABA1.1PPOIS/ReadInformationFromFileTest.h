@@ -2,7 +2,7 @@
 #include "ReadInformationFromFile.h"
 TEST(RecordingTest, FileRecordingFailure) {
     Recording rec;
-    rec.getRecord("C:\\Users\\37533\\Desktop\\project\\course-2_semester-1\\PPOIS\\laba1\\PPOIS-laba-1.txt");
+    rec.getRecord("C:\\Users\\37533\\Desktop\\project\\course-2_semester-1\\PPOIS\\LABA1.1PPOIS\\PPOIS-laba-1.txt");
     EXPECT_FALSE(rec.recordingInformationFromFile());
 }
 
@@ -21,7 +21,7 @@ TEST(RecordingTest, FileGetChanges) {
 
 TEST(RecordingTest, FileRecordingSuccess) {
     Recording rec;
-    rec.getRecord("C:\\Users\\37533\\Desktop\\projects\\course-2_semester-1\\PPOIS\\laba1\\PPOIS-laba-1.txt");
+    rec.getRecord("C:\\Users\\37533\\Desktop\\projects\\course-2_semester-1\\PPOIS\\LABA1.1PPOIS\\PPOIS-laba-1.txt");
     EXPECT_TRUE(rec.recordingInformationFromFile());
     EXPECT_EQ(rec.setText(), "This is the first paragraph of text.\nThis is the second paragraph of text, which continues over several lines.");
     EXPECT_EQ(rec.setChanges().size(), 7);

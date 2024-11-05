@@ -1,5 +1,6 @@
 #pragma once
 #include "Markov.h"
+
 TEST(MarkovTest, MarkovAlgorithmApplication) {
     Markov markov;
     string initialText = "I love google_test";
