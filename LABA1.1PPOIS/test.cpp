@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include "testMenu.h"
-#include "testMarkov.h"
-#include "testReadInformationFromFile.h"
+#include "MarkovTest.h"
+#include "ReadInformationFromFileTest.h"
+#include "MenuTest.h"
 
 int main(int argc, char** argv) {
     system("chcp 1251");

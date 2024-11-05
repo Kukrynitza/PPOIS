@@ -1,6 +1,16 @@
 #pragma once
 #include "ReadInformationFromFile.h"
 #include "Markov.h"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <math.h>
+#include <iomanip>
+#include <map>
+#include <sstream>
+#include <list>
 using namespace std;
 
 class Menu {

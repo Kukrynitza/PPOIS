@@ -1,14 +1,4 @@
 #include "Menu.h"
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <fstream>
-#include <string>
-#include <math.h>
-#include <iomanip>
-#include <map>
-#include <sstream>
-#include <list>
 string Menu::getChanges(string rec) {
 	recordFileInformation.getRecord(rec);
 	if (recordFileInformation.recordingInformationFromFile())
