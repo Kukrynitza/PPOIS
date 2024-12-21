@@ -7,44 +7,28 @@
 #include <sstream>
 #include <iterator>
 #include <utility>
+#include "Edge.h"
+#include "Node.h"
+#include "NodeIterator.h"
 using namespace std;
-// Структура ребра для графа
-struct Edge {
-    int to;        
-    Edge* next;
-
-    Edge(int to, Edge* next = nullptr) : to(to), next(next) {}
-};
-
-// Структура узла графа
-struct Node {
-    int value;         
-    Edge* head;       
-
-    Node(int value) : value(value), head(nullptr) {}
-};
-
 template <typename T>
 class Graph {
 public:
     typedef T value_type;
     typedef T& reference;
-    typedef const T& const_reference;
     typedef T* pointer;
-    typedef const T* const_pointer;
 
 private:
-     vector< unique_ptr<Node>> nodes;  // Список узлов графа
+     vector< unique_ptr<Node>> nodes; 
 
 public:
     Graph() {}
 
-    // Конструктор копирования
-    Graph(const Graph& other) {
-        for (const auto& node : other.nodes) {
+    Graph(  Graph& other) {
+        for (  auto& node : other.nodes) {
             addNode(node->value);
         }
-        for (const auto& node : other.nodes) {
+        for (  auto& node : other.nodes) {
             Edge* current = node->head;
             while (current) {
                 addEdge(node->value, current->to);
@@ -54,13 +38,13 @@ public:
     }
 
     // Оператор присваивания
-    Graph& operator=(const Graph& other) {
+    Graph& operator=(  Graph& other) {
         if (this != &other) {
             clear();
-            for (const auto& node : other.nodes) {
+            for (  auto& node : other.nodes) {
                 addNode(node->value);
             }
-            for (const auto& node : other.nodes) {
+            for (  auto& node : other.nodes) {
                 Edge* current = node->head;
                 while (current) {
                     addEdge(node->value, current->to);
@@ -74,7 +58,7 @@ public:
     // Метод для добавления узла
     void addNode(T value) {
         nodes.push_back( make_unique<Node>(value));
-         cout << "Added node: " << value <<  endl; // Отладочное сообщение
+         cout << "Added node: " << value <<  endl;
     }
 
     // Метод для добавления ребра (ориентированного)
@@ -99,7 +83,7 @@ public:
 
     // Метод для удаления узла
     void removeNode(T value) {
-        auto it =  remove_if(nodes.begin(), nodes.end(), [value](const  unique_ptr<Node>& node) {
+        auto it =  remove_if(nodes.begin(), nodes.end(), [value](   unique_ptr<Node>& node) {
             return node->value == value;
             });
         if (it == nodes.end()) {
@@ -124,12 +108,12 @@ public:
     }
 
     // Метод для проверки наличия узла
-    bool containsNode(T value) const {
+    bool containsNode(T value)   {
         return findNode(value) != nullptr;
     }
 
     // Метод для проверки наличия ребра
-    bool containsEdge(T from, T to) const {
+    bool containsEdge(T from, T to)   {
         Node* fromNode = findNode(from);
         if (!fromNode) {
             return false;
@@ -146,14 +130,14 @@ public:
     }
 
     // Метод для получения количества узлов
-    size_t getNodeCount() const {
+    size_t getNodeCount()   {
         return nodes.size();
     }
 
     // Метод для получения количества ребер
-    size_t getEdgeCount() const {
+    size_t getEdgeCount()   {
         size_t count = 0;
-        for (const auto& node : nodes) {
+        for (  auto& node : nodes) {
             Edge* current = node->head;
             while (current) {
                 count++;
@@ -164,7 +148,7 @@ public:
     }
 
     // Метод для вычисления степени вершины
-    size_t getNodeDegree(T value) const {
+    size_t getNodeDegree(T value)   {
         Node* node = findNode(value);
         if (!node) {
             throw  invalid_argument("Node not found");
@@ -194,13 +178,13 @@ public:
     }
 
     // Проверка на пустой граф
-    bool empty() const {
+    bool empty()   {
         return nodes.empty();
     }
 
     // Печать графа (с использованием итераторов)
-    void printGraph() const {
-        for (const auto& node : nodes) {
+    void printGraph()   {
+        for (  auto& node : nodes) {
              cout << "Node " << node->value << ":";
             Edge* current = node->head;
             while (current) {
@@ -212,19 +196,19 @@ public:
     }
 
     // Перегрузка оператора вывода
-    friend  ostream& operator<<( ostream& os, const Graph& graph) {
+    friend  ostream& operator<<( ostream& os,   Graph& graph) {
         graph.printGraph();
         return os;
     }
 
     // Операторы сравнения
-    bool operator==(const Graph& other) const {
+    bool operator==(  Graph& other)   {
         if (nodes.size() != other.nodes.size()) {
             return false;
         }
 
-        for (const auto& node : nodes) {
-            const Node* otherNode = other.findNode(node->value);
+        for (  auto& node : nodes) {
+              Node* otherNode = other.findNode(node->value);
             if (!otherNode) {
                 return false;
             }
@@ -247,7 +231,7 @@ public:
         return true;
     }
 
-    bool operator!=(const Graph& other) const {
+    bool operator!=(  Graph& other)   {
         return !(*this == other);
     }
 
@@ -255,75 +239,36 @@ public:
     ~Graph() {
         clear();
     }
-
-    // Итераторы
-    class NodeIterator : public  iterator< bidirectional_iterator_tag, Node> {
-        typename  vector< unique_ptr<Node>>::iterator it;
-
-    public:
-        NodeIterator(typename  vector< unique_ptr<Node>>::iterator it) : it(it) {}
-
-        Node& operator*() const { return **it; }
-        Node* operator->() const { return it->get(); }
-
-        NodeIterator& operator++() { ++it; return *this; }
-        NodeIterator operator++(int) { NodeIterator tmp = *this; ++it; return tmp; }
-
-        NodeIterator& operator--() { --it; return *this; }
-        NodeIterator operator--(int) { NodeIterator tmp = *this; --it; return tmp; }
-
-        bool operator==(const NodeIterator& other) const { return it == other.it; }
-        bool operator!=(const NodeIterator& other) const { return it != other.it; }
-    };
-
-    class EdgeIterator : public  iterator< bidirectional_iterator_tag,  pair<int, int>> {
-        Node* node;
-        Edge* edge;
-
-    public:
-        EdgeIterator(Node* node, Edge* edge) : node(node), edge(edge) {}
-
-         pair<int, int> operator*() const { return { node->value, edge->to }; }
-         pair<int, int>* operator->() const { return new  pair<int, int>(node->value, edge->to); }
-
-        EdgeIterator& operator++() { edge = edge->next; return *this; }
-        EdgeIterator operator++(int) { EdgeIterator tmp = *this; edge = edge->next; return tmp; }
-
-        bool operator==(const EdgeIterator& other) const { return edge == other.edge; }
-        bool operator!=(const EdgeIterator& other) const { return edge != other.edge; }
-    };
-
     class IncidentEdgeIterator : public  iterator< bidirectional_iterator_tag, Edge> {
         Edge* edge;
 
     public:
         IncidentEdgeIterator(Edge* edge) : edge(edge) {}
 
-        Edge& operator*() const { return *edge; }
-        Edge* operator->() const { return edge; }
+        Edge& operator*() { return *edge; }
+        Edge* operator->() { return edge; }
 
         IncidentEdgeIterator& operator++() { edge = edge->next; return *this; }
         IncidentEdgeIterator operator++(int) { IncidentEdgeIterator tmp = *this; edge = edge->next; return tmp; }
 
-        bool operator==(const IncidentEdgeIterator& other) const { return edge == other.edge; }
-        bool operator!=(const IncidentEdgeIterator& other) const { return edge != other.edge; }
+        bool operator==(IncidentEdgeIterator& other) { return edge == other.edge; }
+        bool operator!=(IncidentEdgeIterator& other) { return edge != other.edge; }
     };
-
-    class AdjacentNodeIterator : public  iterator< forward_iterator_tag, Node> {
+    class EdgeIterator : public  iterator< bidirectional_iterator_tag, pair<int, int>> {
+        Node* node;
         Edge* edge;
-        Graph* graph;
 
     public:
-        AdjacentNodeIterator(Edge* edge, Graph* graph) : edge(edge), graph(graph) {}
+        EdgeIterator(Node* node, Edge* edge) : node(node), edge(edge) {}
 
-        Node& operator*() const { return *graph->findNode(edge->to); }
-        Node* operator->() const { return graph->findNode(edge->to); }
+        pair<int, int> operator*() { return { node->value, edge->to }; }
+        pair<int, int>* operator->() { return new  pair<int, int>(node->value, edge->to); }
 
-        AdjacentNodeIterator& operator++() { edge = edge->next; return *this; }
-        AdjacentNodeIterator operator++(int) { AdjacentNodeIterator tmp = *this; edge = edge->next; return tmp; }
+        EdgeIterator& operator++() { edge = edge->next; return *this; }
+        EdgeIterator operator++(int) { EdgeIterator tmp = *this; edge = edge->next; return tmp; }
 
-        bool operator==(const AdjacentNodeIterator& other) const { return edge == other.edge; }
-        bool operator!=(const AdjacentNodeIterator& other) const { return edge != other.edge; }
+        bool operator==(EdgeIterator& other) { return edge == other.edge; }
+        bool operator!=(EdgeIterator& other) { return edge != other.edge; }
     };
 
     NodeIterator begin() { return NodeIterator(nodes.begin()); }
@@ -340,6 +285,22 @@ public:
 
     IncidentEdgeIterator incident_edges_begin(Node& node) { return IncidentEdgeIterator(node.head); }
     IncidentEdgeIterator incident_edges_end() { return IncidentEdgeIterator(nullptr); }
+    class AdjacentNodeIterator : public  iterator< forward_iterator_tag, Node> {
+        Edge* edge;
+        Graph* graph;
+
+    public:
+        AdjacentNodeIterator(Edge* edge, Graph* graph) : edge(edge), graph(graph) {}
+
+        Node& operator*() { return *graph->findNode(edge->to); }
+        Node* operator->() { return graph->findNode(edge->to); }
+
+        AdjacentNodeIterator& operator++() { edge = edge->next; return *this; }
+        AdjacentNodeIterator operator++(int) { AdjacentNodeIterator tmp = *this; edge = edge->next; return tmp; }
+
+        bool operator==(AdjacentNodeIterator& other) { return edge == other.edge; }
+        bool operator!=(AdjacentNodeIterator& other) { return edge != other.edge; }
+    };
 
     AdjacentNodeIterator adjacent_nodes_begin(Node& node) { return AdjacentNodeIterator(node.head, this); }
     AdjacentNodeIterator adjacent_nodes_end() { return AdjacentNodeIterator(nullptr, this); }
@@ -351,7 +312,6 @@ public:
     void removeEdge(EdgeIterator it) {
         removeEdge(it->first, it->second);
     }
-
     NodeIterator rbegin() { return NodeIterator(nodes.rbegin()); }
     NodeIterator rend() { return NodeIterator(nodes.rend()); }
 
@@ -370,35 +330,33 @@ public:
     AdjacentNodeIterator radjacent_nodes_begin(Node& node) { return AdjacentNodeIterator(node.head, this); }
     AdjacentNodeIterator radjacent_nodes_end() { return AdjacentNodeIterator(nullptr, this); }
 
-    const NodeIterator cbegin() const { return NodeIterator(nodes.cbegin()); }
-    const NodeIterator cend() const { return NodeIterator(nodes.cend()); }
+      NodeIterator cbegin()   { return NodeIterator(nodes.cbegin()); }
+      NodeIterator cend()   { return NodeIterator(nodes.cend()); }
 
-    const EdgeIterator cedges_begin() const {
+      EdgeIterator cedges_begin()   {
         for (auto& node : nodes) {
             if (node->head) return EdgeIterator(node.get(), node->head);
         }
         return cedges_end();
     }
 
-    const EdgeIterator cedges_end() const { return EdgeIterator(nullptr, nullptr); }
+      EdgeIterator cedges_end()   { return EdgeIterator(nullptr, nullptr); }
 
-    const IncidentEdgeIterator cincident_edges_begin(const Node& node) const { return IncidentEdgeIterator(node.head); }
-    const IncidentEdgeIterator cincident_edges_end() const { return IncidentEdgeIterator(nullptr); }
+      IncidentEdgeIterator cincident_edges_begin(  Node& node)   { return IncidentEdgeIterator(node.head); }
+      IncidentEdgeIterator cincident_edges_end()   { return IncidentEdgeIterator(nullptr); }
 
-    const AdjacentNodeIterator cadjacent_nodes_begin(const Node& node) const { return AdjacentNodeIterator(node.head, this); }
-    const AdjacentNodeIterator cadjacent_nodes_end() const { return AdjacentNodeIterator(nullptr, this); }
+      AdjacentNodeIterator cadjacent_nodes_begin(  Node& node)   { return AdjacentNodeIterator(node.head, this); }
+      AdjacentNodeIterator cadjacent_nodes_end()   { return AdjacentNodeIterator(nullptr, this); }
 
     // Поиск узла по значению
-    Node* findNode(T value) const {
-        for (const auto& node : nodes) {
+    Node* findNode(T value)   {
+        for (  auto& node : nodes) {
             if (node->value == value) {
                 return node.get();
             }
         }
         return nullptr;
     }
-private:
-
     // Удаление ребер, связанных с определенной вершиной
     void removeEdges(Edge*& head, T to) {
         while (head && head->to == to) {
